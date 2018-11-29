@@ -1,7 +1,7 @@
 # KPF-etc
 README.md
 
-This repository contains a set of pre-calculated photon-limited velocity uncertainties for the Keck Planet Finder project, as well as a simple IDL lookup function (kpf_photon_noise_estimate.pro) for quickly estimating photon-limited RV precision for a user-specified target observation.
+This repository contains a set of pre-calculated photon-limited velocity uncertainties for the Keck Planet Finder project, as well as a simple IDL lookup function (kpf_photon_noise_estimate.pro) for quickly estimating photon-limited RV precision for a user-specified target observation.  (A Python interpolator is desired. Does someone wants to write one?)
 
 The model grid descriptions are as follows:
 
