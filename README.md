@@ -28,4 +28,4 @@ All calculations are based on BT-Settl synthetic stellar spectra, available at: 
 
 A vsini value of 2 km/s is assumed for all models.
 
-Current grid uses the latest KPF PDR throughput model, a median WMKO atmospheric transmission curve (Buton et al 2012), and excludes regions of the spectrum with 1% or deeper telluric features (based on telfit model).
+Current grid uses the latest KPF PDR throughput model (30 micron STA detector, green & red camera), a median WMKO atmospheric transmission curve (Buton et al 2012), and excludes regions of the spectrum with 1% or deeper telluric features (based on telfit model).
