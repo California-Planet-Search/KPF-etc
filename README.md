@@ -26,4 +26,6 @@ Interpolating beyond these bounds will result in errors in the returned RV value
 	
 All calculations are based on BT-Settl synthetic stellar spectra, available at: http://phoenix.astro.physik.uni-goettingen.de/?page_id=15
 
-Current grid uses the KPF PDR throughput model, a median WMKO atmospheric transmission curve (Buton et al 2012), and excludes regions of the spectrum with 1% or deeper telluric features (based on telfit model).
+A vsini value of 2 km/s is assumed for all models.
+
+Current grid uses the latest KPF PDR throughput model, a median WMKO atmospheric transmission curve (Buton et al 2012), and excludes regions of the spectrum with 1% or deeper telluric features (based on telfit model).
