@@ -39,7 +39,6 @@
 ;	Keywords:
 ;	- FITS_DIR: Directory location of fits files, including master grid + basis arrays
 ;	- SAVE_FILE: Flag keyword for saving order-by-order sigma_rv values to a text file
-;	- QUIET: Suppresses text output in terminal
 ;
 ;	Outputs:
 ;	- SNR_ORD:	Mean SNR for each order in the KPF bandpass (array)
@@ -50,7 +49,7 @@
 ;
 FUNCTION KPF_PHOTON_NOISE_ESTIMATE,TEFF,VMAG,EXP_TIME, $
 	SNR_ORD,DV_ORD,WVL_ARR, $
-	FITS_DIR=FITS_DIR,QUIET=QUIET,SAVE_FILE=SAVE_FILE
+	FITS_DIR=FITS_DIR,SAVE_FILE=SAVE_FILE
 
 ;fits files directory containing all master data cubes, basis vectors
 IF NOT KEYWORD_SET(FITS_DIR) THEN FITS_DIR = './'
@@ -99,35 +98,24 @@ sigma_rv_val = INTERPOLATE(sigma_rv_grid, teff_location, vmag_location, exptime_
 sigma_rv_ord = DBLARR(N_ELEMENTS(order_arr))
 snr_rv_ord = DBLARR(N_ELEMENTS(order_arr))
 
-IF NOT KEYWORD_SET(QUIET) THEN BEGIN
-	PRINT,''
-	PRINT,'--------------------------'
-	PRINT,'Order #','	','Wavelength [nm]','	','Mean SNR','	','sigma_rv [m/s]'
-	;for each order, interpolate grids
-	FOR l = 0, N_ELEMENTS(order_arr) - 1 DO BEGIN
-		;sigma_rv interpolation
-		sigma_rv_grid_ord_l = sigma_rv_grid_ord[*,*,*,l]
-		sigma_rv_val_l = INTERPOLATE(sigma_rv_grid_ord_l, teff_location, vmag_location, exptime_location, /GRID, /DOUBLE)
-		sigma_rv_ord[l] = sigma_rv_val_l
-		
-		;snr grid interpolation
-		snr_grid_ord_l = snr_grid_ord[*,*,*,l]
-		snr_rv_val_l = INTERPOLATE(snr_grid_ord_l, teff_location, vmag_location, exptime_location, /GRID, /DOUBLE)
-		snr_rv_ord[l] = snr_rv_val_l
-		PRINT,STRCOMPRESS(STRING(order_arr[l],format='(f20.1)'),/REMOVE),'		' $
-			,STRCOMPRESS(STRING(wvl_arr[l],format='(f20.1)'),/REMOVE),'		' $
-			,STRCOMPRESS(STRING(snr_rv_ord[l],format='(f20.2)'),/REMOVE),'		' $
-			,STRCOMPRESS(STRING(sigma_rv_ord[l],format='(f20.3)'),/REMOVE)
+;for each order, interpolate grids
+FOR l = 0, N_ELEMENTS(order_arr) - 1 DO BEGIN
+	;sigma_rv interpolation
+	sigma_rv_grid_ord_l = sigma_rv_grid_ord[*,*,*,l]
+	sigma_rv_val_l = INTERPOLATE(sigma_rv_grid_ord_l, teff_location, vmag_location, exptime_location, /GRID, /DOUBLE)
+	sigma_rv_ord[l] = sigma_rv_val_l
 	
-	ENDFOR
+	;snr grid interpolation
+	snr_grid_ord_l = snr_grid_ord[*,*,*,l]
+	snr_rv_val_l = INTERPOLATE(snr_grid_ord_l, teff_location, vmag_location, exptime_location, /GRID, /DOUBLE)
+	snr_rv_ord[l] = snr_rv_val_l
+;	PRINT,STRCOMPRESS(STRING(order_arr[l],format='(f20.1)'),/REMOVE),'		' $
+;		,STRCOMPRESS(STRING(wvl_arr[l],format='(f20.1)'),/REMOVE),'		' $
+;		,STRCOMPRESS(STRING(snr_rv_ord[l],format='(f20.2)'),/REMOVE),'		' $
+;		,STRCOMPRESS(STRING(sigma_rv_ord[l],format='(f20.3)'),/REMOVE)
+
+ENDFOR
 	
-	PRINT,'--------------------------'
-	PRINT,''
-	PRINT,'Total velocity uncertainty: ' + STRCOMPRESS(STRING(sigma_rv_val,format='(f20.2)'),/REMOVE) + ' m/s'
-	PRINT,''
-
-ENDIF
-
 ;output arrays for mean SNR and velocity uncertainty across orders
 SNR_ORD = snr_rv_ord
 DV_ORD = sigma_rv_ord
@@ -155,7 +143,7 @@ sigma_rv_str = STRCOMPRESS(STRING(sigma_rv_val,format=sigma_rv_str_fot),/remove)
 
 ;save ascii file containing sigma_rv, snr, if desired
 IF KEYWORD_SET(SAVE_FILE) THEN BEGIN
-	save_file_name_tags = 'dv_photon_' + teff_str + '_' + v_mag_str + '_' + exp_time_str + '_' + vsini_str
+	save_file_name_tags = 'dv_photon_' + teff_str + '_' + v_mag_str + '_' + exp_time_str
 	
 	;save ascii file with mean order SNR, dv estimate
 	OPENW,UnitW,save_file_name_tags + '.txt',/Get_LUN
@@ -171,7 +159,7 @@ IF KEYWORD_SET(SAVE_FILE) THEN BEGIN
 
 	PRINTF,UnitW,'Wavelength [nm]','	Mean SNR per pixel','	Sigma_rv [m/s]'
 	FOR i=0,N_ELEMENTS(order_arr)-1 DO BEGIN
-	     PRINTF,UnitW,wvl_ords[i],snr_rv_ord[i],sigma_rv_ord[i],format='(f20.3,f20.3,f20.3)'
+	     PRINTF,UnitW,wvl_arr[i],snr_rv_ord[i],sigma_rv_ord[i],format='(f20.3,f20.3,f20.3)'
 	ENDFOR
 	FREE_LUN,UnitW
 ENDIF
