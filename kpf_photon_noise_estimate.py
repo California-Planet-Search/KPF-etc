@@ -48,16 +48,17 @@
 #               Mean SNR for each order in the KPF bandpass (array)
 #	        Estimated velocity uncertainty for each echelle order [m/s] (array)
 #
-#Example call: dv, orderinfo = KPF_photon_noise_estimate(5400.,8.,600.,fits_dir='grids/')
-#
+# Example Function call: dv, orderinfo = KPF_photon_noise_estimate(5400.,8.,600.,fits_dir='grids/')
+# Example Command Line call: python kpf_photon_noise_estimate.py
+
 
 # We use astropy for reading fits files, since PyFITS has a planned deprecation
 #       see http://docs.astropy.org/en/stable/io/fits/appendix/faq.html
 from astropy.io import fits
-from scipy import interpolate
 from scipy.interpolate import InterpolatedUnivariateSpline
 from scipy.interpolate import RegularGridInterpolator
 import numpy as np
+
 
 
 def KPF_photon_noise_estimate(Teff, Vmag, exp_time,
@@ -186,7 +187,7 @@ def KPF_photon_noise_estimate(Teff, Vmag, exp_time,
     return (sigma_rv_val, (wvl_arr, snr_ord, dv_ord))
 
 
-#dv, orderinfo = KPF_photon_noise_estimate(5400.,8.,600.,fits_dir='grids/')
+dv, orderinfo = KPF_photon_noise_estimate(5400.,8.,600.,fits_dir='grids/')
 
 
 
