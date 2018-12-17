@@ -1,4 +1,4 @@
-;*************ESTIMATES PHOTON-LIMITED VELOCITY UNCETAINTIES FOR KPF*************
+;*************ESTIMATES PHOTON-LIMITED VELOCITY UNCERTAINTIES FOR KPF*************
 ;
 ;	This function is a simple interpolator for a pre-calculated grid of photon-limited RV uncertainties.
 ;	The four dimensions to the 'master' grid are: 
@@ -8,11 +8,11 @@
 ;	- Exposure time [s]
 ;	- KPF echelle order
 ;
-	;	The precomputed sigma_rv grid was calculated assuming parameter bounds of:
-	;	- Teff: 2700 - 6600 Kelvin
-	;	- Vmag: 5 - 19
-	;	- Texp: 10 - 3600 seconds
-	;	Interpolating beyond these bounds will result in errors in the returned RV values
+;	The precomputed sigma_rv grid was calculated assuming parameter bounds of:
+;	- Teff: 2700 - 6600 Kelvin
+;	- Vmag: 5 - 19
+;	- Texp: 10 - 3600 seconds
+;	Interpolating beyond these bounds will result in errors in the returned RV values
 ;
 ;	The interpolator loads a set of pre-defined .fits files with the relevant grid, basis vectors (Teff, Vmag, Texp)
 ;
@@ -40,10 +40,14 @@
 ;	- FITS_DIR: Directory location of fits files, including master grid + basis arrays
 ;	- SAVE_FILE: Flag keyword for saving order-by-order sigma_rv values to a text file
 ;
-;	Outputs:
+;	Optional outputs:
 ;	- SNR_ORD:	Mean SNR for each order in the KPF bandpass (array)
 ;	- DV_ORD:	Estimated velocity uncertainty for each echelle order [m/s] (array)
 ;	- WVL_ARR:	Mean wavelength for each echelle order	[nm] (array)
+;
+;
+;	Written by Sam Halverson, 11/18/18
+;
 ;
 ;Example call: dv = KPF_PHOTON_NOISE_ESTIMATE(5400d,8d,600d,SNR_ORD,DV_ORD,FITS_DIR='grids/')
 ;
@@ -71,9 +75,9 @@ sigma_rv_total_file = FITS_DIR + 'dv_uncertainty_master.fits'
 wvl_ord_file = FITS_DIR + 'order_wvl_centers.fits'
 
 ;read in data cubes and arrays
-;    sigma_rv_grid_ord ( Teff, Vmag, Exposure time, Echelle order)	- order-binned velocity uncertainty
-;    SNR_grid_ord ( Teff, Vmag, Exposure time, Echelle order)	- mean spectral SNR within order
-;	 sigma_rv_grid ( Teff, Vmag, Exposure time )	- total
+;  sigma_rv_grid_ord ( Teff, Vmag, Exposure time, Echelle order)	- order-binned velocity uncertainty
+;  SNR_grid_ord ( Teff, Vmag, Exposure time, Echelle order)	- mean spectral SNR within order
+;  sigma_rv_grid ( Teff, Vmag, Exposure time )	- total
 snr_grid_ord = READFITS(SNR_grid_file,/SILENT)
 sigma_rv_grid_ord = READFITS(sigma_rv_grid_file,/SILENT)
 sigma_rv_grid = READFITS(sigma_rv_total_file,/SILENT)
@@ -109,11 +113,6 @@ FOR l = 0, N_ELEMENTS(order_arr) - 1 DO BEGIN
 	snr_grid_ord_l = snr_grid_ord[*,*,*,l]
 	snr_rv_val_l = INTERPOLATE(snr_grid_ord_l, teff_location, vmag_location, exptime_location, /GRID, /DOUBLE)
 	snr_rv_ord[l] = snr_rv_val_l
-;	PRINT,STRCOMPRESS(STRING(order_arr[l],format='(f20.1)'),/REMOVE),'		' $
-;		,STRCOMPRESS(STRING(wvl_arr[l],format='(f20.1)'),/REMOVE),'		' $
-;		,STRCOMPRESS(STRING(snr_rv_ord[l],format='(f20.2)'),/REMOVE),'		' $
-;		,STRCOMPRESS(STRING(sigma_rv_ord[l],format='(f20.3)'),/REMOVE)
-
 ENDFOR
 	
 ;output arrays for mean SNR and velocity uncertainty across orders
