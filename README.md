@@ -19,7 +19,7 @@ The basis arrays used to generate the grids are contained in these files:
 The precomputed grids were calculated assuming parameter bounds of:
 
 	- Teff: 2700 - 6600 Kelvin
-	- Vmag: 5 - 19
+	- Vmag: 2 - 19
 	- Texp: 10 - 3600 seconds
 	
 Interpolating beyond these bounds will result in errors in the returned RV values.
