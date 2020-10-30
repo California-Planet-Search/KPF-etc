@@ -10,6 +10,7 @@ To install, simply download the package, change directories into the downloaded 
 	pip install .
 
 Example uses below:
+
 	from kpf_etc.etc import kpf_photon_noise_estimate, kpf_etc_rv, kpf_etc_snr
 
 	exp_time = 46. # s
