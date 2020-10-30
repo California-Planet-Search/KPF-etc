@@ -1,9 +1,30 @@
 # KPF-etc
 README.md
 
-This repository contains a set of pre-calculated photon-limited velocity uncertainties for the Keck Planet Finder project, as well as simple IDL and Python lookup functions (kpf_photon_noise_estimate.pro and .py respectively) for quickly estimating photon-limited RV precision for a user-specified target observation. Due to differences in the interpolaters, very small differences may be noticeable between the two routines.  
+This repository contains a set of pre-calculated photon-limited velocity uncertainties for the Keck Planet Finder project, as well as a simple Python lookup function for quickly estimating photon-limited RV precision for a user-specified target observation. 
 
-The model grid descriptions are as follows:
+In addition to a photon noise estimator (etc.kpf_photon_noise_estimate), there are also two child functions that calculate the required exposure time to reach a desired photon-limited RV uncertainty (etc.kpf_etc_rv), and to reach a desired spectral signal-to-noise value at a specific wavelength (etc.kpf_etc_rv).
+
+To install, simply download the package, change directories into the downloaded folder, and run:
+	pip install .
+
+Example uses below:
+	from kpf_etc.etc import kpf_photon_noise_estimate, kpf_etc_rv, kpf_etc_snr
+
+	exp_time = 46. # s
+	vmag = 8.
+	teff = 5000. # K
+	sigma_rv_val, wvl_arr, snr_ord, dv_ord = kpf_photon_noise_estimate(teff,vmag,exp_time)  
+
+	sigma_rv_desired = 0.5 # m/s
+	exposure_time_sigma_rv = kpf_etc_rv(teff, vmag, sigma_rv_desired)
+
+	snr_desired = 500.
+	wavelength_desired = 550. # nm
+	exposure_time_snr = kpf_etc_snr(teff, vmag, snr_desired, wavelength_desired)
+
+
+The model grid descriptions (located in kpf_etc/grids) are as follows:
 
 	'dv_uncertainty_master_order.fits':  order-by-order velocity uncertainites [m/s] (4D grid, Teff x Vmag x Exposure time x Echelle order)
     'dv_uncertainty_master.fits': 		 integrated KPF velocity uncertainty values [m/s] (3D grid, Teff x Vmag x Exposure time)
