@@ -6,6 +6,7 @@ This repository contains a set of pre-calculated photon-limited velocity uncerta
 In addition to a photon noise estimator (etc.kpf_photon_noise_estimate), there are also two child functions that calculate the required exposure time to reach a desired photon-limited RV uncertainty (etc.kpf_etc_rv), and to reach a desired spectral signal-to-noise value at a specific wavelength (etc.kpf_etc_rv).
 
 To install, simply download the package, change directories into the downloaded folder, and run:
+
 	pip install .
 
 Example uses below:
