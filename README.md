@@ -13,14 +13,17 @@ Example uses below:
 
 	from kpf_etc.etc import kpf_photon_noise_estimate, kpf_etc_rv, kpf_etc_snr
 
+	# calculate photon noise estimate for a known exposure length
 	exp_time = 46. # s
 	vmag = 8.
 	teff = 5000. # K
 	sigma_rv_val, wvl_arr, snr_ord, dv_ord = kpf_photon_noise_estimate(teff,vmag,exp_time)  
 
+	# exposure time estimate to reach a desired RV precision
 	sigma_rv_desired = 0.5 # m/s
 	exposure_time_sigma_rv = kpf_etc_rv(teff, vmag, sigma_rv_desired)
 
+	# exposure time estimate to reach a desired spectral SNR
 	snr_desired = 500.
 	wavelength_desired = 550. # nm
 	exposure_time_snr = kpf_etc_snr(teff, vmag, snr_desired, wavelength_desired)
