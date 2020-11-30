@@ -3,7 +3,7 @@ README.md
 
 This repository contains a set of pre-calculated photon-limited velocity uncertainties for the Keck Planet Finder project, as well as a simple Python lookup function for quickly estimating photon-limited RV precision for a user-specified target observation. 
 
-In addition to a photon noise estimator (etc.kpf_photon_noise_estimate), there are also two child functions that calculate the required exposure time to reach a desired photon-limited RV uncertainty (etc.kpf_etc_rv), and to reach a desired spectral signal-to-noise value at a specific wavelength (etc.kpf_etc_rv).
+In addition to a photon noise estimator (etc.kpf_photon_noise_estimate), there are also functions that calculate the required exposure time to reach a desired photon-limited RV uncertainty (etc.kpf_etc_rv), and to reach a desired spectral signal-to-noise value at a specific wavelength (etc.kpf_etc_rv).
 
 To install, simply download the package, change directories into the downloaded folder, and run:
 
@@ -52,8 +52,6 @@ Interpolating beyond these bounds will result in errors in the returned RV value
 	
 All calculations are based on BT-Settl synthetic stellar spectra, available at: http://phoenix.astro.physik.uni-goettingen.de/?page_id=15
 
-A vsini value of 2 km/s is assumed for all models.
-
-Current grid uses the latest KPF PDR throughput model (30 micron STA detector, green & red camera), a median WMKO atmospheric transmission curve (Buton et al 2012), and excludes regions of the spectrum with 1% or deeper telluric features (based on telfit model).
+The current uncertainty grid uses the latest KPF PDR throughput model (30 micron STA detector, green & red camera), a median WMKO atmospheric transmission curve (Buton et al 2012), and excludes regions of the spectrum with 1% or deeper telluric features (based on telfit model). A vsini value of 2 km/s is assumed for all stellar targets, and the observation airmass is fixed at 1.2.
 
 Written by Sam Halverson (samuel.halverson@jpl.nasa.gov) and Sean Mills
